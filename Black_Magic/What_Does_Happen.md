@@ -32,68 +32,66 @@ Before any steering or throttle commands, the gamepad’s wireless signals must 
 
 ## 1. Press ← & → (Steering)
 
-**Overview:**
+**End-to-End Signal & Control Flow:**
 
 ```
-Joystick → evdev input → Python normalization → PiRacer API → Servo PWM → Front wheels turn
+Controller ADC & RF → USB HID → evdev → Python normalization → PiRacer API → I²C → PCA9685 PWM → Servo driver → Wheel linkage
 ```
 
-1. **Joystick movement (Left Stick - X axis)**
+1. **ADC Sampling & RF Transmission**
 
-   * Generates an analog event (`ABS_X`) in the range -32767…+32767 (center ≈ 0).
+   * Controller’s MCU reads left-stick X-axis via a 12-bit ADC (0–3.3 V → –32767…+32767).
+   * Packs axis data and button states into an HID report, appends CRC, and transmits via 2.4 GHz RF (nRF24L01–class), with ARQ/FEC.
 
-2. **Raspberry Pi reads the input**
+2. **USB HID Reception & Kernel Parsing**
+
+   * USB dongle decodes RF, verifies CRC, and exposes itself as a USB HID gamepad.
+   * Linux’s `usbcore` + `hid-generic` bind the device; `usbhid` fetches reports over an Interrupt-IN endpoint (\~8 ms polling).
+
+3. **evdev Event Generation**
+
+   * HID core translates reports into `struct input_event` entries:
+
+     * Type: `EV_ABS`, Code: `ABS_X`, Value: raw axis.
+   * Events queued under `/dev/input/eventN` for user-space access.
+
+4. **User-Space Normalization**
 
    ```python
    if event.code == ecodes.ABS_X:
-       steering = -event.value / 32767.0
+       steering = -event.value / 32767.0  # → range [–1.0, +1.0]
    ```
 
-   * Normalizes value to -1.0…+1.0: -1.0 = full left, +1.0 = full right.
+   * Negative sign aligns positive values with right-turn.
 
-3. **Send steering command to PiRacer**
+5. **PiRacer API Call**
 
-   ```python
-   piracer.set_steering_percent(steering)
-   ```
+   * `piracer.set_steering_percent(steering)` selects a PWM channel and duty cycle:
 
-   * The Python API adjusts the PWM duty cycle on the servo channel to turn the wheels.
+     * Maps –1.0→1.0 ms, 0→1.5 ms pulse width at 50 Hz.
 
-4. **Result**
+6. **I²C-Controlled PWM Generation**
 
-   * The front wheels rotate left or right according to the joystick position.
+   * Raspberry Pi writes PWM registers on the PCA9685 over I²C (`/dev/i2c-1` at 1 kHz).
+   * PCA9685 outputs buffered, level-shifted PWM signals to the servo connector.
 
----
+7. **Servo Actuation & Mechanical Linkage**
 
-## 2. Press "A" Button (Moving Forward)
+   * Pulse width controls the micro-servo horn (e.g., MG90S) to rotate (±90°).
+   * Link rods transmit servo motion to front wheel knuckles, steering the wheels.
 
-**Overview:**
+### I²C Bus Details
 
-```
-A button → evdev input → Python throttle update → PiRacer API → H-bridge PWM → Rear DC motors
-```
+* **Bus Type:** I²C (Inter-Integrated Circuit), two-wire serial (SDA, SCL).
+* **Device Node:** `/dev/i2c-1` on Raspberry Pi (pin header: GPIO2=SDA, GPIO3=SCL).
+* **Speed:** Standard mode at 100 kHz or Fast mode at 400 kHz (PCA9685 supports up to 1 MHz).
+* **Protocol:** Master (RPi) initiates transfer by sending device address, register address, then data to configure PWM frequency and duty cycles.
 
-1. **Pressing A button**
+### PWM Signal Details
 
-   * Controller emits a digital event `BTN_SOUTH` with `value = 1` on press, `0` on release.
+* **PWM (Pulse-Width Modulation):** Controls average voltage by switching between on/off states.
+* **Frequency:** 50 Hz for servos, 1–2 kHz for DC motor speed control.
+* **Duty Cycle:** Percentage of ON time per period (e.g., 7.5% at 50 Hz ≈ 1.5 ms pulse width for neutral servo position).
+* **Mapping:** `steering` or `throttle` values map linearly to pulse widths (e.g., 1.0 ms–2.0 ms for steering servo).
 
-2. **Raspberry Pi updates throttle**
-
-   ```python
-   if event.code == ecodes.BTN_SOUTH:
-       throttle = 0.5 if event.value == 1 else 0.0
-   ```
-
-   * `0.5` = 50% forward speed, `0.0` = stop.
-
-3. **Send throttle command to PiRacer**
-
-   ```python
-   piracer.set_throttle_percent(throttle)
-   ```
-
-   * The API sets the PWM duty cycle on the motor driver inputs.
-
-4. **Result**
-
-   * Rear DC motors receive PWM and drive the car forward when A is pressed, stopping on release.
+**Latency Budget:** RF (\~1 ms) + USB poll (\~8 ms) + kernel & evdev (<1 ms) + Python (<1 ms) + I²C & PWM (<1 ms) = **<12 ms**
