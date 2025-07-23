@@ -14,9 +14,9 @@ candump can1 # recieve signals
 sudo ip link set can1 down # turn off can1    
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;
 
-
-to enter virtual environment    
+**to enter virtual environment**
 
 source ~/env_tf1/bin/activate # active    
 
