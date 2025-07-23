@@ -15,11 +15,12 @@ sudo ip link set can1 down # turn off can1
 
 
 
+
 to enter virtual environment    
 
 source ~/env_tf1/bin/activate # active    
 
-deactivate #exit> This is a blockqute    
+deactivate #exit    
 
 
 
