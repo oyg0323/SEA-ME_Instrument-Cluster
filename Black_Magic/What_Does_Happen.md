@@ -30,7 +30,7 @@ Before any steering or throttle commands, the gamepad’s wireless signals must 
 
 ---
 
-## 1. Press ← & → (Steering)
+## 1. Press ← & → (control)
 
 **End-to-End Signal & Control Flow:**
 
