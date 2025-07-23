@@ -27,6 +27,7 @@ Below is a detailed, professional overview of the complete signal and control ch
 
    * The `hid-generic` driver binds the device; `usbhid` schedules periodic transfers.
    * HID reports are parsed into `struct input_event` entries (type=EV\_ABS, code=ABS\_X, value=raw) under `/dev/input/eventN`.
+   * **evdev** (event device) is the Linux kernel input subsystem interface that exposes these hardware events to user-space applications as standardized event files.
 
 5. **User-Space Normalization (Python)**
 
