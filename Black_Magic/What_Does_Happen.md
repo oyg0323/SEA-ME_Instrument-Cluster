@@ -2,121 +2,166 @@
 
 ![Joystick to PiRacer Pipeline](image-1.png)
 
----
-
-## Wireless Input Reception (End-to-End)
-
-This section covers how the controller’s analog-stick movements become Linux input events on the Raspberry Pi with minimal latency and high reliability.
-
-1. **ADC Sampling & RF Packetization (Controller Side)**
-
-   * The controller’s MCU reads the left-stick X-axis via a 12-bit ADC (voltage 0–3.3 V → digital range –32767…+32767).
-   * Axis values and button states are packed into a HID-style report (32–64 bytes), with a CRC-16 appended for error detection.
-   * A 2.4 GHz RF transceiver (e.g., Nordic nRF24L01-class SoC) transmits the packet on a chosen ISM-band channel.
-   * ARQ (Automatic Repeat Request) and optional FEC ensure lost or corrupted packets are retransmitted.
-
-2. **RF Reception & USB HID Emulation (USB Dongle)**
-
-   * The USB dongle’s RF radio receives the packet, discards CRC-invalid frames, and extracts the HID report payload.
-   * The dongle’s MCU enumerates as a USB Full-Speed (12 Mbps) HID device on the Pi.
-   * Defines an Interrupt-IN endpoint (e.g., 8 bytes, polled every 8 ms) for sending reports to the host.
-
-3. **USB Stack & HID Parsing (Host Kernel)**
-
-   * Upon dongle insertion, `usbcore` reads descriptors, binds `hid-generic` and `usbhid` drivers.
-   * The kernel schedules periodic interrupt transfers to fetch the latest HID reports from the dongle.
-
-4. **evdev Event Generation**
-
-   * The HID core maps report fields to input subsystem events:
-
-     * Axes → `EV_ABS` events (e.g., `ABS_X`), raw value –32767…+32767
-     * Buttons → `EV_KEY` events (e.g., `BTN_SOUTH`), value 0 or 1
-   * Events are queued into `/dev/input/eventN` as `struct input_event` records.
-   * Total latency: \~1 ms (RF) + \~8 ms (USB poll) + \~1 ms (kernel) = **<10 ms**.
+Below is a detailed, professional overview of the complete signal and control chain—from joystick movement to front-wheel actuation.
 
 ---
 
-## 1. Press ← & → (Steering)
+## End-to-End Input Pipeline
+
+1. **Joystick ADC Sampling & HID Packetization**
+
+   * The controller’s MCU samples the left stick X-axis via a 12-bit ADC (0–3.3 V → –32767…+32767).
+   * Axis and button states are packaged into a 32–64 byte HID report with a CRC-16 checksum.
+
+2. **2.4 GHz RF Transmission**
+
+   * A Nordic nRF24L01-class RF transceiver broadcasts the HID report on an ISM-band channel.
+   * ARQ and optional FEC mechanisms ensure packet integrity.
+
+3. **USB Dongle Reception & Interrupt-IN**
+
+   * The Pi’s USB dongle decodes RF, verifies the CRC, and emulates a USB Full-Speed (12 Mbps) HID gamepad.
+   * It exposes an Interrupt-IN endpoint (8 bytes, ∼8 ms interval) to deliver reports to the host.
+
+4. **Linux HID Core & evdev**
+
+   * The `hid-generic` driver binds the device; `usbhid` schedules periodic transfers.
+   * HID reports are parsed into `struct input_event` entries (type=EV\_ABS, code=ABS\_X, value=raw) under `/dev/input/eventN`.
+
+5. **User-Space Normalization (Python)**
+
+   ```python
+   from evdev import InputDevice, ecodes
+   dev = InputDevice('/dev/input/eventN')
+   for event in dev.read_loop():
+       if event.type == ecodes.EV_ABS and event.code == ecodes.ABS_X:
+           raw = event.value
+           steering = -raw / 32767.0  # normalized to [–1.0, +1.0]
+   ```
+
+   * Inversion aligns positive values with rightward steering.
+
+6. **PiRacer API Call**
+
+   ```bash
+   pip install piracer
+   ```
+
+   ```python
+   import piracer
+   piracer.set_steering_percent(steering)
+   ```
+
+   * The API selects the appropriate control channel on the PCA9685 PWM driver.
+
+7. **I²C-Controlled PWM Configuration**
+
+   ```bash
+   pip install smbus2
+   ```
+
+   ```python
+   from smbus2 import SMBus
+   bus = SMBus(1)                 # /dev/i2c-1 (SDA=GPIO2, SCL=GPIO3)
+   PCA9685_ADDR = 0x40
+   # Configure MODE1 for 50 Hz output
+   bus.write_byte_data(PCA9685_ADDR, 0x00, 0x10)
+   # Write 12-bit ON/OFF counts to LEDn registers
+   bus.write_i2c_block_data(PCA9685_ADDR, 0x06, [on_l, on_h, off_l, off_h])
+   ```
+
+8. **PWM Signal Generation (PCA9685)**
+
+   * The PCA9685 outputs buffered PWM on 16 channels: a 50 Hz waveform with programmable duty cycle.
+   * Pulse widths range from 1.0 ms (–1.0 steering) to 2.0 ms (+1.0 steering).
+
+9. **Servo Actuation & Mechanical Steering**
+
+   * The MG90S/MG996R servo interprets pulse width: 1.0 ms→–90°, 1.5 ms→0°, 2.0 ms→+90°.
+   * The servo horn’s motion translates, via tie rods and Ackermann linkage, into precise front-wheel angle adjustments.
+
+---
+
+---
+
+## 2. Press "A" Button (Moving Forward)
 
 **Signal & Control Pipeline:**
 
 ```
-Controller ADC → RF → USB HID → evdev → Python normalization → PiRacer API → I²C → PCA9685 → PWM → Servo driver → Mechanical linkage → Front wheels
+Controller Digital Input → RF → USB HID → evdev → Python throttle mapping → PiRacer API → GPIO/I²C → Motor driver (H‑bridge) → Rear DC motors → Wheels
 ```
 
-1. **evdev Input**
+1. **evdev Digital Event**
 
    * `/dev/input/eventN` emits:
 
      ```c
-     struct input_event ev = { .type = EV_ABS, .code = ABS_X, .value = raw }; // raw ∈ [–32767,+32767]
+     struct input_event ev = { .type = EV_KEY, .code = BTN_SOUTH, .value = state }; // state ∈ {0,1}
      ```
 
-2. **Python Normalization**
+2. **Python Throttle Mapping**
 
    ```python
-   if event.code == ecodes.ABS_X:
-       steering = -event.value / 32767.0  # normalized ∈ [–1.0,+1.0]
+   from evdev import ecodes
+   if event.type == ecodes.EV_KEY and event.code == ecodes.BTN_SOUTH:
+       throttle = 0.5 if event.value == 1 else 0.0  # 50% forward on press, 0% on release
    ```
-
-   * Inversion ensures positive value = right turn.
 
 3. **PiRacer API Call**
 
-   ```python
-   piracer.set_steering_percent(steering)
+   ```bash
+   pip install piracer
    ```
 
-   * Internally selects a PCA9685 PWM channel and computes pulse width:
+   ```python
+   import piracer
+   piracer.set_throttle_percent(throttle)
+   ```
 
-     * **Pulse Width** (ms) = 1.0 ms + (steering + 1.0) × 0.5 ms
-     * Range: 1.0 ms (–1.0) … 2.0 ms (+1.0) at 50 Hz.
+   * Internally chooses PWM channels or digital lines for motor driver inputs.
 
-4. **I²C Communication**
+4. **Motor Driver Interface**
 
-   * The Pi’s I²C master writes to the PCA9685 registers over `/dev/i2c-1`:
+   * The PiRacer expansion board integrates an H‑bridge driver (e.g., TB6612FNG).
+   * Direction pins (DIR) are set via GPIO outputs; PWM pin is modulated for speed control.
 
-     * Bus pins: GPIO2 (SDA), GPIO3 (SCL)
-     * Address: 0x40 (default)
-     * Frequency: set via MODE1 register → \~50 Hz output.
-     * PWM registers (LEDn\_ON, LEDn\_OFF) receive 12-bit counts (0–4095).
-   * Each register write sequence:
+5. **PWM or GPIO Output**
 
-     ```text
-     [START][0x40<<1 + W][register][data]…[STOP]
-     ```
+   * For I²C‑based drivers, `smbus2` sets PWM frequency (>200 Hz) on PCA9685.
+   * For direct GPIO, `RPi.GPIO` or `pigpio` generates hardware PWM on designated pins (e.g., GPIO18).
 
-5. **PCA9685 PWM Output**
+   ```python
+   import RPi.GPIO as GPIO
+   GPIO.setup(18, GPIO.OUT)
+   pwm = GPIO.PWM(18, 1000)  # 1 kHz for DC motor
+   pwm.start(throttle * 100)  # duty% = throttle*100
+   ```
 
-   * Generates 16 channels of buffered, level-shifted PWM outputs.
-   * Outputs a 50 Hz pulse train: ON count → OFF count mapping to desired pulse width.
+6. **DC Motor Actuation**
 
-6. **Servo Driver & Mechanics**
+   * The H‑bridge drives current through the rear gear motors (37-520), converting PWM duty cycle to rotational speed.
+   * Brake/coast behavior managed by setting both driver inputs low or floating respectively.
 
-   * PWM drives a micro-servo (e.g., MG90S): 1.0 ms = –90°, 1.5 ms = 0°, 2.0 ms = +90°.
-   * Servo horn moves the tie-rod, steering knuckle, and front wheel hubs.
-   * Mechanical geometry (Ackermann linkages) translates horn rotation into precise wheel angle.
+7. **Mechanical Drive**
+
+   * Motor output shafts transmit torque via gears and drive belt to the rear wheels, propelling the vehicle forward or halting it.
 
 ---
 
-### I²C Bus Essentials
+### I²C Bus Details
 
-* **Protocol:** Master/slave, 7-bit addressing, clock-stretched bidirectional data.
-* **Speeds:** Standard (100 kHz), Fast (400 kHz), Fast Plus (1 MHz).
-* **Flow:** START → Address + R/W bit → ACK → Register pointer → Data bytes → STOP.
-* **Error Handling:** NACK on invalid address/register; bus arbitration if multiple masters.
+* **Protocol**: Master/slave, 7-bit addressing, ACK/NACK handshaking.
+* **Speeds**: Standard (100 kHz), Fast (400 kHz), Fast Plus (1 MHz).
+* **Transaction**: START → Slave Address + R/W → ACK → Register Addr → Data Bytes → STOP.
 
 ### PWM Fundamentals
 
-* **Definition:** Modulate a digital signal’s duty cycle to simulate analog levels.
+* **Definition**: Varying duty cycle at fixed frequency to modulate power delivery.
+* **Servo Frequency**: 50 Hz (20 ms period).
+* **Duty Cycle Calculation**: Duty% = (PulseWidth(ms) / Period(ms)) × 100.
+* **Steering Mapping**: 5% (1.0 ms) → full left, 7.5% (1.5 ms) → center, 10% (2.0 ms) → full right.
 
-* **Frequency:** 50 Hz for hobby servos; DC motors often use >200 Hz to minimize torque ripple.
+**Total Latency**: RF (\~1 ms) + USB poll (\~8 ms) + kernel parse (<1 ms) + Python (<1 ms) + I²C/PWM (<1 ms) = **<12 ms**
 
-* **Duty Cycle Calculation:**
-
-  $\text{Duty}\% = \frac{\text{PulseWidth(ms)}}{\text{Period(ms)}} \times 100\%$
-
-* **Servo Mapping:** 1.0 ms (5%) → full left; 1.5 ms (7.5%) → center; 2.0 ms (10%) → full right.
-
-**\~12 ms total round-trip latency** ensures responsive, real-time steering control.
+This pipeline ensures high-fidelity, low-latency steering control for the PiRacer platform.
