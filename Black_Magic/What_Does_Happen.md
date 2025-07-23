@@ -1,97 +1,122 @@
 # How PiRacer Works with a Joystick (Xbox 360 Controller)
 
-![alt text](image-1.png)
+![Joystick to PiRacer Pipeline](image-1.png)
 
 ---
 
-## Wireless Input Reception
+## Wireless Input Reception (End-to-End)
 
-Before any steering or throttle commands, the gamepad’s wireless signals must be received and converted into Linux input events:
+This section covers how the controller’s analog-stick movements become Linux input events on the Raspberry Pi with minimal latency and high reliability.
 
-1. **RF Transmission (Controller Side)**
+1. **ADC Sampling & RF Packetization (Controller Side)**
 
-   * MCU samples the joystick axes via ADC and packages axis/button data into a HID report with CRC.
-   * A 2.4 GHz transceiver (e.g., Nordic nRF24L01-class) wirelessly sends the report, using ARQ/FEC for reliability.
+   * The controller’s MCU reads the left-stick X-axis via a 12-bit ADC (voltage 0–3.3 V → digital range –32767…+32767).
+   * Axis values and button states are packed into a HID-style report (32–64 bytes), with a CRC-16 appended for error detection.
+   * A 2.4 GHz RF transceiver (e.g., Nordic nRF24L01-class SoC) transmits the packet on a chosen ISM-band channel.
+   * ARQ (Automatic Repeat Request) and optional FEC ensure lost or corrupted packets are retransmitted.
 
-2. **USB Dongle Reception**
+2. **RF Reception & USB HID Emulation (USB Dongle)**
 
-   * The USB dongle decodes the RF packet, verifies CRC, and exposes itself as a USB HID Gamepad (Interrupt-IN endpoint, \~8 ms polling).
+   * The USB dongle’s RF radio receives the packet, discards CRC-invalid frames, and extracts the HID report payload.
+   * The dongle’s MCU enumerates as a USB Full-Speed (12 Mbps) HID device on the Pi.
+   * Defines an Interrupt-IN endpoint (e.g., 8 bytes, polled every 8 ms) for sending reports to the host.
 
-3. **Host USB Stack (Linux Kernel)**
+3. **USB Stack & HID Parsing (Host Kernel)**
 
-   * The Pi’s `usbcore` enumerates the HID device and uses `hid-generic` + `usbhid` to fetch reports over interrupt transfers.
+   * Upon dongle insertion, `usbcore` reads descriptors, binds `hid-generic` and `usbhid` drivers.
+   * The kernel schedules periodic interrupt transfers to fetch the latest HID reports from the dongle.
 
-4. **evdev Exposure**
+4. **evdev Event Generation**
 
-   * The HID core parses reports into `EV_ABS` (axes) and `EV_KEY` (buttons) events.
-   * Events appear under `/dev/input/eventN`, ready for user-space.
+   * The HID core maps report fields to input subsystem events:
 
-*Total latency from physical stick movement to `/dev/input/eventN` <10 ms.*
+     * Axes → `EV_ABS` events (e.g., `ABS_X`), raw value –32767…+32767
+     * Buttons → `EV_KEY` events (e.g., `BTN_SOUTH`), value 0 or 1
+   * Events are queued into `/dev/input/eventN` as `struct input_event` records.
+   * Total latency: \~1 ms (RF) + \~8 ms (USB poll) + \~1 ms (kernel) = **<10 ms**.
 
 ---
 
-## 1. Press ← & → (control)
+## 1. Press ← & → (Steering)
 
-**End-to-End Signal & Control Flow:**
+**Signal & Control Pipeline:**
 
 ```
-Controller ADC & RF → USB HID → evdev → Python normalization → PiRacer API → I²C → PCA9685 PWM → Servo driver → Wheel linkage
+Controller ADC → RF → USB HID → evdev → Python normalization → PiRacer API → I²C → PCA9685 → PWM → Servo driver → Mechanical linkage → Front wheels
 ```
 
-1. **ADC Sampling & RF Transmission**
+1. **evdev Input**
 
-   * Controller’s MCU reads left-stick X-axis via a 12-bit ADC (0–3.3 V → –32767…+32767).
-   * Packs axis data and button states into an HID report, appends CRC, and transmits via 2.4 GHz RF (nRF24L01–class), with ARQ/FEC.
+   * `/dev/input/eventN` emits:
 
-2. **USB HID Reception & Kernel Parsing**
+     ```c
+     struct input_event ev = { .type = EV_ABS, .code = ABS_X, .value = raw }; // raw ∈ [–32767,+32767]
+     ```
 
-   * USB dongle decodes RF, verifies CRC, and exposes itself as a USB HID gamepad.
-   * Linux’s `usbcore` + `hid-generic` bind the device; `usbhid` fetches reports over an Interrupt-IN endpoint (\~8 ms polling).
-
-3. **evdev Event Generation**
-
-   * HID core translates reports into `struct input_event` entries:
-
-     * Type: `EV_ABS`, Code: `ABS_X`, Value: raw axis.
-   * Events queued under `/dev/input/eventN` for user-space access.
-
-4. **User-Space Normalization**
+2. **Python Normalization**
 
    ```python
    if event.code == ecodes.ABS_X:
-       steering = -event.value / 32767.0  # → range [–1.0, +1.0]
+       steering = -event.value / 32767.0  # normalized ∈ [–1.0,+1.0]
    ```
 
-   * Negative sign aligns positive values with right-turn.
+   * Inversion ensures positive value = right turn.
 
-5. **PiRacer API Call**
+3. **PiRacer API Call**
 
-   * `piracer.set_steering_percent(steering)` selects a PWM channel and duty cycle:
+   ```python
+   piracer.set_steering_percent(steering)
+   ```
 
-     * Maps –1.0→1.0 ms, 0→1.5 ms pulse width at 50 Hz.
+   * Internally selects a PCA9685 PWM channel and computes pulse width:
 
-6. **I²C-Controlled PWM Generation**
+     * **Pulse Width** (ms) = 1.0 ms + (steering + 1.0) × 0.5 ms
+     * Range: 1.0 ms (–1.0) … 2.0 ms (+1.0) at 50 Hz.
 
-   * Raspberry Pi writes PWM registers on the PCA9685 over I²C (`/dev/i2c-1` at 1 kHz).
-   * PCA9685 outputs buffered, level-shifted PWM signals to the servo connector.
+4. **I²C Communication**
 
-7. **Servo Actuation & Mechanical Linkage**
+   * The Pi’s I²C master writes to the PCA9685 registers over `/dev/i2c-1`:
 
-   * Pulse width controls the micro-servo horn (e.g., MG90S) to rotate (±90°).
-   * Link rods transmit servo motion to front wheel knuckles, steering the wheels.
+     * Bus pins: GPIO2 (SDA), GPIO3 (SCL)
+     * Address: 0x40 (default)
+     * Frequency: set via MODE1 register → \~50 Hz output.
+     * PWM registers (LEDn\_ON, LEDn\_OFF) receive 12-bit counts (0–4095).
+   * Each register write sequence:
 
-### I²C Bus Details
+     ```text
+     [START][0x40<<1 + W][register][data]…[STOP]
+     ```
 
-* **Bus Type:** I²C (Inter-Integrated Circuit), two-wire serial (SDA, SCL).
-* **Device Node:** `/dev/i2c-1` on Raspberry Pi (pin header: GPIO2=SDA, GPIO3=SCL).
-* **Speed:** Standard mode at 100 kHz or Fast mode at 400 kHz (PCA9685 supports up to 1 MHz).
-* **Protocol:** Master (RPi) initiates transfer by sending device address, register address, then data to configure PWM frequency and duty cycles.
+5. **PCA9685 PWM Output**
 
-### PWM Signal Details
+   * Generates 16 channels of buffered, level-shifted PWM outputs.
+   * Outputs a 50 Hz pulse train: ON count → OFF count mapping to desired pulse width.
 
-* **PWM (Pulse-Width Modulation):** Controls average voltage by switching between on/off states.
-* **Frequency:** 50 Hz for servos, 1–2 kHz for DC motor speed control.
-* **Duty Cycle:** Percentage of ON time per period (e.g., 7.5% at 50 Hz ≈ 1.5 ms pulse width for neutral servo position).
-* **Mapping:** `steering` or `throttle` values map linearly to pulse widths (e.g., 1.0 ms–2.0 ms for steering servo).
+6. **Servo Driver & Mechanics**
 
-**Latency Budget:** RF (\~1 ms) + USB poll (\~8 ms) + kernel & evdev (<1 ms) + Python (<1 ms) + I²C & PWM (<1 ms) = **<12 ms**
+   * PWM drives a micro-servo (e.g., MG90S): 1.0 ms = –90°, 1.5 ms = 0°, 2.0 ms = +90°.
+   * Servo horn moves the tie-rod, steering knuckle, and front wheel hubs.
+   * Mechanical geometry (Ackermann linkages) translates horn rotation into precise wheel angle.
+
+---
+
+### I²C Bus Essentials
+
+* **Protocol:** Master/slave, 7-bit addressing, clock-stretched bidirectional data.
+* **Speeds:** Standard (100 kHz), Fast (400 kHz), Fast Plus (1 MHz).
+* **Flow:** START → Address + R/W bit → ACK → Register pointer → Data bytes → STOP.
+* **Error Handling:** NACK on invalid address/register; bus arbitration if multiple masters.
+
+### PWM Fundamentals
+
+* **Definition:** Modulate a digital signal’s duty cycle to simulate analog levels.
+
+* **Frequency:** 50 Hz for hobby servos; DC motors often use >200 Hz to minimize torque ripple.
+
+* **Duty Cycle Calculation:**
+
+  $\text{Duty}\% = \frac{\text{PulseWidth(ms)}}{\text{Period(ms)}} \times 100\%$
+
+* **Servo Mapping:** 1.0 ms (5%) → full left; 1.5 ms (7.5%) → center; 2.0 ms (10%) → full right.
+
+**\~12 ms total round-trip latency** ensures responsive, real-time steering control.
