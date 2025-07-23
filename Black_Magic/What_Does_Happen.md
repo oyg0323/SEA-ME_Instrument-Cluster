@@ -2,77 +2,98 @@
 
 ![alt text](image-1.png)
 
-## 1. Press <- & -> (Streering)
-1) Overview
+---
 
-    Joystick → Raspberry Pi (evdev input) → PiRacer → Front wheels steering
+## Wireless Input Reception
 
-2) Detailed flow
+Before any steering or throttle commands, the gamepad’s wireless signals must be received and converted into Linux input events:
 
-    (1) Joystick movement (Left Stick - X axis)
+1. **RF Transmission (Controller Side)**
 
-    - The left stick sends an analog event (ABS_X) with values ranging from -32767 to 32767.
+   * MCU samples the joystick axes via ADC and packages axis/button data into a HID report with CRC.
+   * A 2.4 GHz transceiver (e.g., Nordic nRF24L01-class) wirelessly sends the report, using ARQ/FEC for reliability.
 
-    - The center position is near 0.
+2. **USB Dongle Reception**
 
-    (2) Raspberry Pi reads the input
+   * The USB dongle decodes the RF packet, verifies CRC, and exposes itself as a USB HID Gamepad (Interrupt-IN endpoint, \~8 ms polling).
 
-    - The evdev library detects the event:
+3. **Host USB Stack (Linux Kernel)**
 
-            if event.code == ecodes.ABS_X:
-                steering = -event.value / 32767.0
-    
+   * The Pi’s `usbcore` enumerates the HID device and uses `hid-generic` + `usbhid` to fetch reports over interrupt transfers.
 
-    - This converts the range to -1.0 to +1.0, where:
+4. **evdev Exposure**
 
-        -1.0 = full left,
+   * The HID core parses reports into `EV_ABS` (axes) and `EV_KEY` (buttons) events.
+   * Events appear under `/dev/input/eventN`, ready for user-space.
 
-        +1.0 = full right.
+*Total latency from physical stick movement to `/dev/input/eventN` <10 ms.*
 
-    (3) Send steering command to PiRacer
+---
 
-    - Using the API:
-            
-            piracer.set_steering_percent(steering)
+## 1. Press ← & → (Steering)
 
+**Overview:**
 
-    - The servo motor adjusts the front wheels accordingly.
-    
-    (4) Result
+```
+Joystick → evdev input → Python normalization → PiRacer API → Servo PWM → Front wheels turn
+```
 
-    - The PiRacer’s front wheels turn left or right, steering the car.
+1. **Joystick movement (Left Stick - X axis)**
 
+   * Generates an analog event (`ABS_X`) in the range -32767…+32767 (center ≈ 0).
+
+2. **Raspberry Pi reads the input**
+
+   ```python
+   if event.code == ecodes.ABS_X:
+       steering = -event.value / 32767.0
+   ```
+
+   * Normalizes value to -1.0…+1.0: -1.0 = full left, +1.0 = full right.
+
+3. **Send steering command to PiRacer**
+
+   ```python
+   piracer.set_steering_percent(steering)
+   ```
+
+   * The Python API adjusts the PWM duty cycle on the servo channel to turn the wheels.
+
+4. **Result**
+
+   * The front wheels rotate left or right according to the joystick position.
+
+---
 
 ## 2. Press "A" Button (Moving Forward)
-1) Overview
 
-    A Button → Raspberry Pi (evdev input) → PiRacer → Rear motor drive → Car moves forward
+**Overview:**
 
-2) Detailed flow
+```
+A button → evdev input → Python throttle update → PiRacer API → H-bridge PWM → Rear DC motors
+```
 
-    (1) Pressing A button
+1. **Pressing A button**
 
-    - The Xbox controller sends a digital event: BTN_SOUTH.
+   * Controller emits a digital event `BTN_SOUTH` with `value = 1` on press, `0` on release.
 
-    - When pressed: event.value == 1
-    - When released: event.value == 0.
+2. **Raspberry Pi updates throttle**
 
-    (2) Raspberry Pi updates throttle
+   ```python
+   if event.code == ecodes.BTN_SOUTH:
+       throttle = 0.5 if event.value == 1 else 0.0
+   ```
 
-    - The following code handles throttle:
+   * `0.5` = 50% forward speed, `0.0` = stop.
 
+3. **Send throttle command to PiRacer**
 
-            if event.code == ecodes.BTN_SOUTH:
-                throttle = 0.5 if event.value == 1 else 0.0
+   ```python
+   piracer.set_throttle_percent(throttle)
+   ```
 
-    (3) Send throttle command to PiRacer
+   * The API sets the PWM duty cycle on the motor driver inputs.
 
-    - Using the API:
+4. **Result**
 
-            piracer.set_throttle_percent(throttle)
-    - 0.5 means 50% forward speed, 0.0 stops the motor.
-
-    (4) Result
-
-    - The rear DC motors power the car forward when A is pressed, and stop when it’s released.
-
+   * Rear DC motors receive PWM and drive the car forward when A is pressed, stopping on release.
