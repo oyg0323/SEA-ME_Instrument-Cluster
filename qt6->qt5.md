@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.14)
 &nbsp;&nbsp;&nbsp;&nbsp;
 project(Practice LANGUAGES CXX)
 
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 set(CMAKE_CXX_STANDARD 17)
@@ -23,9 +24,13 @@ find_package(Qt5 REQUIRED COMPONENTS Quick Qml QuickControls2)
 #소스,리소스 
 
 set(SRC
+&nbsp;&nbsp;&nbsp;&nbsp;
     main.cpp
+&nbsp;&nbsp;&nbsp;&nbsp;
     timeprovider.cpp
+&nbsp;&nbsp;&nbsp;&nbsp;
 )
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 qt5_add_resources(QRC_SRCS resources.qrc)
 
@@ -34,25 +39,40 @@ qt5_add_resources(QRC_SRCS resources.qrc)
 ##실행파일
 &nbsp;&nbsp;&nbsp;&nbsp;
 add_executable(${PROJECT_NAME}
+&nbsp;&nbsp;&nbsp;&nbsp;
     ${SRC}
+&nbsp;&nbsp;&nbsp;&nbsp;
     ${QRC_SRCS}
+&nbsp;&nbsp;&nbsp;&nbsp;
 )
 
+&nbsp;&nbsp;&nbsp;&nbsp;
 target_link_libraries(${PROJECT_NAME} PRIVATE
+&nbsp;&nbsp;&nbsp;&nbsp;
     Qt5::Quick
+&nbsp;&nbsp;&nbsp;&nbsp;
     Qt5::Qml
+&nbsp;&nbsp;&nbsp;&nbsp;
     Qt5::QuickControls2
+&nbsp;&nbsp;&nbsp;&nbsp;
 )
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 #선택설치
+&nbsp;&nbsp;&nbsp;&nbsp;
 include(GNUInstallDirs)
+&nbsp;&nbsp;&nbsp;&nbsp;
 install(TARGETS ${PROJECT_NAME}
+&nbsp;&nbsp;&nbsp;&nbsp;
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 **main.cpp**
 
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 // 기존
+&nbsp;&nbsp;&nbsp;&nbsp;
 const QUrl url(QStringLiteral("qrc:/qt/qml/Practice/Main.qml"));
 // 수정
 const QUrl url(QStringLiteral("qrc:/Main.qml"));
