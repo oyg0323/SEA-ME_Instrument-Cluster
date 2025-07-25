@@ -1,4 +1,4 @@
-#CMakeLists.txt수정
+**CMakeLists.txt수정**
 cmake_minimum_required(VERSION 3.14)
 project(Practice LANGUAGES CXX)
 
@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 REQUIRED COMPONENTS Quick Qml QuickControls2)
 
-## --- 소스 / 리소스 -------------------------------------------------
+#소스,리소스 
 set(SRC
     main.cpp
     timeprovider.cpp
@@ -17,7 +17,7 @@ set(SRC
 
 qt5_add_resources(QRC_SRCS resources.qrc)
 
-## --- 실행 파일 -----------------------------------------------------
+##실행파일
 add_executable(${PROJECT_NAME}
     ${SRC}
     ${QRC_SRCS}
@@ -29,18 +29,18 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt5::QuickControls2
 )
 
-## --- (선택) 설치 ---------------------------------------------------
+#선택설치
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-#main.cpp
+**main.cpp**
 // 기존
 const QUrl url(QStringLiteral("qrc:/qt/qml/Practice/Main.qml"));
 // 수정
 const QUrl url(QStringLiteral("qrc:/Main.qml"));
 
-#resoures.qrc 내의 <filie>"name.qml"</file> 등등  추가 
+**resoures.qrc 내의 <filie>"name.qml"</file> 등등  추가 **
 <RCC>
     <qresource prefix="/">
         <file>Main.qml</file>
