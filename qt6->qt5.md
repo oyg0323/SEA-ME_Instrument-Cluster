@@ -2,22 +2,25 @@
 
 
 cmake_minimum_required(VERSION 3.14)
+&nbsp;&nbsp;&nbsp;&nbsp;
 project(Practice LANGUAGES CXX)
 
 
 
 set(CMAKE_CXX_STANDARD 17)
+&nbsp;&nbsp;&nbsp;&nbsp;
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+&nbsp;&nbsp;&nbsp;&nbsp;
 set(CMAKE_AUTOMOC ON)
+&nbsp;&nbsp;&nbsp;&nbsp;
 set(CMAKE_AUTORCC ON)
 
-
-
+&nbsp;&nbsp;&nbsp;&nbsp;
 find_package(Qt5 REQUIRED COMPONENTS Quick Qml QuickControls2)
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 #소스,리소스 
-
-
 
 set(SRC
     main.cpp
@@ -26,7 +29,10 @@ set(SRC
 
 qt5_add_resources(QRC_SRCS resources.qrc)
 
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
 ##실행파일
+&nbsp;&nbsp;&nbsp;&nbsp;
 add_executable(${PROJECT_NAME}
     ${SRC}
     ${QRC_SRCS}
