@@ -1,0 +1,4 @@
+<svg width="32" height="16" viewBox="0 0 32 16" xmlns="http://www.w3.org/2000/svg">
+  <!-- 짧고 뚱뚱한 기둥 + 화살촉 -->
+  <path d="M0 5 H12 V2 L24 8 L12 14 V11 H0 Z" fill="#00AA00" opacity="0.3"></path>
+</svg>

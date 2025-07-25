@@ -14,170 +14,122 @@
                     {
                         "codegenSuccessful": true,
                         "column": 27,
-                        "durationMicroseconds": 76,
+                        "durationMicroseconds": 72,
                         "errorMessage": "",
                         "functionName": "centerIn",
                         "line": 16
                     },
                     {
-                        "codegenSuccessful": false,
-                        "column": 18,
-                        "durationMicroseconds": 179,
-                        "errorMessage": "Cannot access value for name batterylevel",
-                        "functionName": "visible",
-                        "line": 23
-                    },
-                    {
                         "codegenSuccessful": true,
                         "column": 23,
-                        "durationMicroseconds": 69,
+                        "durationMicroseconds": 26,
                         "errorMessage": "",
-                        "functionName": "left",
-                        "line": 24
+                        "functionName": "fill",
+                        "line": 22
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 22,
-                        "durationMicroseconds": 50,
+                        "column": 27,
+                        "durationMicroseconds": 23,
                         "errorMessage": "",
-                        "functionName": "top",
+                        "functionName": "fill",
                         "line": 25
                     },
                     {
                         "codegenSuccessful": false,
-                        "column": 18,
-                        "durationMicroseconds": 195,
-                        "errorMessage": "Cannot access value for name batterylevel",
-                        "functionName": "visible",
-                        "line": 33
+                        "column": 23,
+                        "durationMicroseconds": 217,
+                        "errorMessage": "Cannot access value for name timeProvider",
+                        "functionName": "text",
+                        "line": 29
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 35,
-                        "durationMicroseconds": 55,
+                        "column": 30,
+                        "durationMicroseconds": 60,
+                        "errorMessage": "",
+                        "functionName": "top",
+                        "line": 32
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 43,
+                        "durationMicroseconds": 48,
                         "errorMessage": "",
                         "functionName": "horizontalCenter",
-                        "line": 35
+                        "line": 33
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 18,
+                        "durationMicroseconds": 169,
+                        "errorMessage": "Cannot access value for name batterylevel",
+                        "functionName": "visible",
+                        "line": 42
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 23,
+                        "durationMicroseconds": 50,
+                        "errorMessage": "",
+                        "functionName": "left",
+                        "line": 43
                     },
                     {
                         "codegenSuccessful": true,
                         "column": 22,
-                        "durationMicroseconds": 49,
-                        "errorMessage": "",
-                        "functionName": "top",
-                        "line": 36
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 24,
-                        "durationMicroseconds": 47,
-                        "errorMessage": "",
-                        "functionName": "right",
-                        "line": 70
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 33,
                         "durationMicroseconds": 46,
                         "errorMessage": "",
-                        "functionName": "verticalCenter",
-                        "line": 72
+                        "functionName": "top",
+                        "line": 44
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 18,
+                        "durationMicroseconds": 189,
+                        "errorMessage": "Cannot access value for name batterylevel",
+                        "functionName": "visible",
+                        "line": 52
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 74,
+                        "column": 35,
+                        "durationMicroseconds": 52,
                         "errorMessage": "",
-                        "functionName": "x",
-                        "line": 78
+                        "functionName": "horizontalCenter",
+                        "line": 54
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 62,
+                        "column": 22,
+                        "durationMicroseconds": 48,
                         "errorMessage": "",
-                        "functionName": "y",
-                        "line": 79
+                        "functionName": "top",
+                        "line": 55
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 49,
+                        "column": 27,
+                        "durationMicroseconds": 23,
                         "errorMessage": "",
-                        "functionName": "left",
-                        "line": 88
+                        "functionName": "centerIn",
+                        "line": 84
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 33,
+                        "column": 39,
                         "durationMicroseconds": 47,
                         "errorMessage": "",
-                        "functionName": "verticalCenter",
-                        "line": 90
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 63,
-                        "errorMessage": "",
-                        "functionName": "x",
+                        "functionName": "horizontalCenter",
                         "line": 96
                     },
                     {
                         "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 60,
+                        "column": 26,
+                        "durationMicroseconds": 46,
                         "errorMessage": "",
-                        "functionName": "y",
+                        "functionName": "top",
                         "line": 97
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 33,
-                        "durationMicroseconds": 51,
-                        "errorMessage": "",
-                        "functionName": "verticalCenter",
-                        "line": 106
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 35,
-                        "durationMicroseconds": 46,
-                        "errorMessage": "",
-                        "functionName": "horizontalCenter",
-                        "line": 107
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 25,
-                        "durationMicroseconds": 46,
-                        "errorMessage": "",
-                        "functionName": "bottom",
-                        "line": 119
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 35,
-                        "durationMicroseconds": 44,
-                        "errorMessage": "",
-                        "functionName": "horizontalCenter",
-                        "line": 122
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 60,
-                        "errorMessage": "",
-                        "functionName": "x",
-                        "line": 129
-                    },
-                    {
-                        "codegenSuccessful": true,
-                        "column": 23,
-                        "durationMicroseconds": 59,
-                        "errorMessage": "",
-                        "functionName": "y",
-                        "line": 130
                     }
                 ],
                 "filePath": "/home/gihoon/GHKim/QT/Practice/Main.qml"

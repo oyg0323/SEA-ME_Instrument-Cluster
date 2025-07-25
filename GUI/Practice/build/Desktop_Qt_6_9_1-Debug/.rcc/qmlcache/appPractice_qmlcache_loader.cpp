@@ -26,6 +26,48 @@ namespace _qt_qml_Practice_Car_qml {
         reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
     };
 }
+namespace _qt_qml_Practice_Neon_qml { 
+    extern const unsigned char qmlData[];
+    extern const QQmlPrivate::AOTCompiledFunction aotBuiltFunctions[];
+    const QQmlPrivate::CachedQmlUnit unit = {
+        reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
+    };
+}
+namespace _qt_qml_Practice_IconButton_qml { 
+    extern const unsigned char qmlData[];
+    extern const QQmlPrivate::AOTCompiledFunction aotBuiltFunctions[];
+    const QQmlPrivate::CachedQmlUnit unit = {
+        reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
+    };
+}
+namespace _qt_qml_Practice_NavigationPage_qml { 
+    extern const unsigned char qmlData[];
+    extern const QQmlPrivate::AOTCompiledFunction aotBuiltFunctions[];
+    const QQmlPrivate::CachedQmlUnit unit = {
+        reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
+    };
+}
+namespace _qt_qml_Practice_MusicPage_qml { 
+    extern const unsigned char qmlData[];
+    extern const QQmlPrivate::AOTCompiledFunction aotBuiltFunctions[];
+    const QQmlPrivate::CachedQmlUnit unit = {
+        reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
+    };
+}
+namespace _qt_qml_Practice_TimePage_qml { 
+    extern const unsigned char qmlData[];
+    extern const QQmlPrivate::AOTCompiledFunction aotBuiltFunctions[];
+    const QQmlPrivate::CachedQmlUnit unit = {
+        reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
+    };
+}
+namespace _qt_qml_Practice_SettingPage_qml { 
+    extern const unsigned char qmlData[];
+    extern const QQmlPrivate::AOTCompiledFunction aotBuiltFunctions[];
+    const QQmlPrivate::CachedQmlUnit unit = {
+        reinterpret_cast<const QV4::CompiledData::Unit*>(&qmlData), &aotBuiltFunctions[0], nullptr
+    };
+}
 
 }
 namespace {
@@ -43,6 +85,12 @@ Registry::Registry() {
     resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/Cluster.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_Cluster_qml::unit);
     resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/Main.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_Main_qml::unit);
     resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/Car.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_Car_qml::unit);
+    resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/Neon.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_Neon_qml::unit);
+    resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/IconButton.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_IconButton_qml::unit);
+    resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/NavigationPage.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_NavigationPage_qml::unit);
+    resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/MusicPage.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_MusicPage_qml::unit);
+    resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/TimePage.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_TimePage_qml::unit);
+    resourcePathToCachedUnit.insert(QStringLiteral("/qt/qml/Practice/SettingPage.qml"), &QmlCacheGeneratedCode::_qt_qml_Practice_SettingPage_qml::unit);
     QQmlPrivate::RegisterQmlUnitCacheHook registration;
     registration.structVersion = 0;
     registration.lookupCachedQmlUnit = &lookupCachedUnit;

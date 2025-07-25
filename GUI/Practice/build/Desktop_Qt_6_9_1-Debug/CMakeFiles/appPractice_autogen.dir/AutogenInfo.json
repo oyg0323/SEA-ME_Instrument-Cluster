@@ -1066,7 +1066,15 @@
 	"CROSS_CONFIG" : false,
 	"DEP_FILE" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "appPractice_autogen/timestamp",
-	"HEADERS" : [],
+	"HEADERS" : 
+	[
+		[
+			"/home/gihoon/GHKim/QT/Practice/timeprovider.h",
+			"MU",
+			"EWIEGA46WW/moc_timeprovider.cpp",
+			null
+		]
+	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
 	"INCLUDE_DIR" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen/include",
 	"MOC_COMPILATION_FILE" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen/mocs_compilation.cpp",
@@ -1147,7 +1155,13 @@
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/qrc_qmake_Practice.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Car_qml.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Cluster_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_IconButton_qml.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Main_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_MusicPage_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_NavigationPage_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Neon_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_SettingPage_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_TimePage_qml.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_qmlcache_loader.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/apppractice_qmltyperegistrations.cpp"
 	],
@@ -1161,7 +1175,8 @@
 	"SETTINGS_FILE" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/CMakeFiles/appPractice_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "/home/gihoon/GHKim/QT/Practice/main.cpp", "MU", null ]
+		[ "/home/gihoon/GHKim/QT/Practice/main.cpp", "MU", null ],
+		[ "/home/gihoon/GHKim/QT/Practice/timeprovider.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],
@@ -1172,7 +1187,13 @@
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/qrc_qmake_Practice.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Car_qml.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Cluster_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_IconButton_qml.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Main_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_MusicPage_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_NavigationPage_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_Neon_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_SettingPage_qml.cpp",
+		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_TimePage_qml.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.rcc/qmlcache/appPractice_qmlcache_loader.cpp",
 		"/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/apppractice_qmltyperegistrations.cpp"
 	],

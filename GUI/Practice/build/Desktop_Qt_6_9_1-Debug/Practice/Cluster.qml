@@ -148,4 +148,24 @@ Item {
         }
     }
 
+    //깜빡이 추가
+    Image{
+        id:right
+        x: 650; y: 30
+        source:"qrc:/images/right.svg"
+        scale: 2
+    }
+    Image{
+        id:left
+        x: 320; y: 30
+        source:"qrc:/images/left.svg"
+        scale: 2
+    }
+    Image{
+        id:mid
+        x: 445; y: -10
+        source:"qrc:/images/red.svg"
+        scale: 0.45
+    }
+
 }

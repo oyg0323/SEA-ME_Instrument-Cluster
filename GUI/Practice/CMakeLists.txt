@@ -22,6 +22,13 @@ qt_add_qml_module(appPractice
         Main.qml
         QML_FILES
         QML_FILES Car.qml
+        QML_FILES Neon.qml
+        QML_FILES IconButton.qml
+        QML_FILES NavigationPage.qml
+        QML_FILES MusicPage.qml
+        QML_FILES TimePage.qml
+        QML_FILES SettingPage.qml
+        SOURCES timeprovider.h timeprovider.cpp
 )
 
 qt_add_resources(appPractice

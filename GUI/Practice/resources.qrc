@@ -11,10 +11,18 @@
         <file>ring.svg</file>
         <file>Ellipse1.svg</file>
         <file>Vector 70.svg</file>
+        <file>car_background.png</file>
         <file>Car.png</file>
         <file>mesh_1.png</file>
         <file>mesh_2.png</file>
         <file>mesh_3.png</file>
-        <file>car_background.png</file>
+        <file>nav.svg</file>
+        <file>settings.svg</file>
+        <file>time.svg</file>
+        <file>music.svg</file>
+        <file>back.svg</file>
+        <file>right.svg</file>
+        <file>left.svg</file>
+        <file>red.svg</file>
     </qresource>
 </RCC>

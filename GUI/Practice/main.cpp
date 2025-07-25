@@ -5,6 +5,7 @@
 #include <QTimer>    // 주기적인 이벤트를 발생시키는 타이머 클래스
 #include <QtGlobal>    // qrand(), qsrand() 등 전역 Qt 함수 사용을 위한 헤더
 #include <QRandomGenerator>
+#include "timeprovider.h"
 
 // RandomData: 속도(speed)와 배터리 레벨(level)
 // 값을 주기적으로(100ms) 랜덤 생성하여 QML에 제공하는 객체
@@ -98,15 +99,18 @@ int main(int argc, char *argv[])
     // 3) QML 엔진 초기화
     QQmlApplicationEngine engine;
 
-    //engine.addImportPath("qrc:/");
+    // ⏰ 시간 객체 생성
+    TimeProvider timeProvider;
 
     // 4) C++ 객체를 QML 컨텍스트에 등록
     //    QML에서 'speedController'와 'batterylevel'로 접근 가능
     engine.rootContext()->setContextProperty("speedController", &randomData);
     engine.rootContext()->setContextProperty("batterylevel", &randomData);
+    engine.rootContext()->setContextProperty("timeProvider", &timeProvider);
 
     // 5) 메인 QML 파일 로드 (qt_add_qml_module의 기본 리소스 위치로 변경)
     const QUrl url(QStringLiteral("qrc:/qt/qml/Practice/Main.qml"));
+
 
     // 6) 에러 처리(경로 비교도 위와 동일하게 변경)
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -117,6 +121,10 @@ int main(int argc, char *argv[])
 
     // 7) QML 파일 로드
     engine.load(url);
+    engine.load(QUrl(QStringLiteral("qrc:/Main.qml")));
+
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
     // 8) Qt 이벤트 루프 진입
     return app.exec();

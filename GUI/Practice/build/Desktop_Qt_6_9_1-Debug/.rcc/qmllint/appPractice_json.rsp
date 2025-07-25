@@ -12,5 +12,11 @@
 /home/gihoon/GHKim/QT/Practice/Cluster.qml
 /home/gihoon/GHKim/QT/Practice/Main.qml
 /home/gihoon/GHKim/QT/Practice/Car.qml
+/home/gihoon/GHKim/QT/Practice/Neon.qml
+/home/gihoon/GHKim/QT/Practice/IconButton.qml
+/home/gihoon/GHKim/QT/Practice/NavigationPage.qml
+/home/gihoon/GHKim/QT/Practice/MusicPage.qml
+/home/gihoon/GHKim/QT/Practice/TimePage.qml
+/home/gihoon/GHKim/QT/Practice/SettingPage.qml
 --json
 /home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_qmllint.json

@@ -4,4 +4,10 @@ prefer :/qt/qml/Practice/
 Cluster 1.0 Cluster.qml
 Main 1.0 Main.qml
 Car 1.0 Car.qml
+Neon 1.0 Neon.qml
+IconButton 1.0 IconButton.qml
+NavigationPage 1.0 NavigationPage.qml
+MusicPage 1.0 MusicPage.qml
+TimePage 1.0 TimePage.qml
+SettingPage 1.0 SettingPage.qml
 

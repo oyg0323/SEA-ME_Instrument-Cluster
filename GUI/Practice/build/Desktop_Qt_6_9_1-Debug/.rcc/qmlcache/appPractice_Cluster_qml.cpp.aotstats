@@ -6,7 +6,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 17,
-                        "durationMicroseconds": 69,
+                        "durationMicroseconds": 74,
                         "errorMessage": "Cannot access value for name speedController",
                         "functionName": "target",
                         "line": 10
@@ -14,7 +14,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 9,
-                        "durationMicroseconds": 55,
+                        "durationMicroseconds": 58,
                         "errorMessage": "Cannot access value for name speedController",
                         "functionName": "onSpeedChanged",
                         "line": 11
@@ -22,7 +22,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 17,
-                        "durationMicroseconds": 29,
+                        "durationMicroseconds": 31,
                         "errorMessage": "Cannot access value for name batterylevel",
                         "functionName": "target",
                         "line": 18
@@ -30,7 +30,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 9,
-                        "durationMicroseconds": 71,
+                        "durationMicroseconds": 75,
                         "errorMessage": "Cannot access value for name batterylevel",
                         "functionName": "onLevelChanged",
                         "line": 19
@@ -38,7 +38,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 19,
-                        "durationMicroseconds": 238,
+                        "durationMicroseconds": 221,
                         "errorMessage": "Cannot access value for name speedController",
                         "functionName": "text",
                         "line": 33
@@ -46,7 +46,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 26,
-                        "durationMicroseconds": 100,
+                        "durationMicroseconds": 91,
                         "errorMessage": "",
                         "functionName": "top",
                         "line": 34
@@ -54,7 +54,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 39,
-                        "durationMicroseconds": 51,
+                        "durationMicroseconds": 50,
                         "errorMessage": "",
                         "functionName": "horizontalCenter",
                         "line": 35
@@ -62,7 +62,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 16,
-                        "durationMicroseconds": 26,
+                        "durationMicroseconds": 25,
                         "errorMessage": "",
                         "functionName": "width",
                         "line": 53
@@ -70,7 +70,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 17,
-                        "durationMicroseconds": 22,
+                        "durationMicroseconds": 21,
                         "errorMessage": "",
                         "functionName": "height",
                         "line": 54
@@ -86,7 +86,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 21,
-                        "durationMicroseconds": 72,
+                        "durationMicroseconds": 69,
                         "errorMessage": "",
                         "functionName": "radius",
                         "line": 64
@@ -102,7 +102,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 27,
-                        "durationMicroseconds": 37,
+                        "durationMicroseconds": 33,
                         "errorMessage": "",
                         "functionName": "width",
                         "line": 61
@@ -110,7 +110,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 27,
-                        "durationMicroseconds": 49,
+                        "durationMicroseconds": 47,
                         "errorMessage": "",
                         "functionName": "color",
                         "line": 62
@@ -118,7 +118,7 @@
                     {
                         "codegenSuccessful": false,
                         "column": 19,
-                        "durationMicroseconds": 193,
+                        "durationMicroseconds": 203,
                         "errorMessage": "Cannot access value for name batterylevel",
                         "functionName": "text",
                         "line": 76
@@ -134,7 +134,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 39,
-                        "durationMicroseconds": 46,
+                        "durationMicroseconds": 45,
                         "errorMessage": "",
                         "functionName": "horizontalCenter",
                         "line": 78
@@ -174,7 +174,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 27,
-                        "durationMicroseconds": 23,
+                        "durationMicroseconds": 22,
                         "errorMessage": "",
                         "functionName": "fill",
                         "line": 102
@@ -182,7 +182,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 27,
-                        "durationMicroseconds": 34,
+                        "durationMicroseconds": 32,
                         "errorMessage": "",
                         "functionName": "width",
                         "line": 104
@@ -190,7 +190,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 27,
-                        "durationMicroseconds": 47,
+                        "durationMicroseconds": 46,
                         "errorMessage": "",
                         "functionName": "color",
                         "line": 105
@@ -206,7 +206,7 @@
                     {
                         "codegenSuccessful": true,
                         "column": 67,
-                        "durationMicroseconds": 31,
+                        "durationMicroseconds": 30,
                         "errorMessage": "",
                         "functionName": "type",
                         "line": 145

@@ -3,6 +3,12 @@
     <file alias="Cluster.qml">/home/gihoon/GHKim/QT/Practice/Cluster.qml</file>
     <file alias="Main.qml">/home/gihoon/GHKim/QT/Practice/Main.qml</file>
     <file alias="Car.qml">/home/gihoon/GHKim/QT/Practice/Car.qml</file>
+    <file alias="Neon.qml">/home/gihoon/GHKim/QT/Practice/Neon.qml</file>
+    <file alias="IconButton.qml">/home/gihoon/GHKim/QT/Practice/IconButton.qml</file>
+    <file alias="NavigationPage.qml">/home/gihoon/GHKim/QT/Practice/NavigationPage.qml</file>
+    <file alias="MusicPage.qml">/home/gihoon/GHKim/QT/Practice/MusicPage.qml</file>
+    <file alias="TimePage.qml">/home/gihoon/GHKim/QT/Practice/TimePage.qml</file>
+    <file alias="SettingPage.qml">/home/gihoon/GHKim/QT/Practice/SettingPage.qml</file>
   </qresource>
 </RCC>
 

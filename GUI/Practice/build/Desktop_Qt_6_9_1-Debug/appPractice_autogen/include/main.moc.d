@@ -1,5 +1,7 @@
 /home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen/include/main.moc: /home/gihoon/GHKim/QT/Practice/main.cpp \
   /home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen/moc_predefs.h \
+  /home/gihoon/GHKim/QT/Practice/timeprovider.h \
+  /home/gihoon/Qt/6.9.1/gcc_64/include/QtCore/QDateTime \
   /home/gihoon/Qt/6.9.1/gcc_64/include/QtCore/QObject \
   /home/gihoon/Qt/6.9.1/gcc_64/include/QtCore/QRandomGenerator \
   /home/gihoon/Qt/6.9.1/gcc_64/include/QtCore/QTimer \

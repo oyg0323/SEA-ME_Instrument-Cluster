@@ -15,6 +15,25 @@ ApplicationWindow {
         id: dial
         anchors.centerIn: parent
         value: 0
+        z:1
+    }
+
+    Item {
+        anchors.fill: parent
+
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+
+            Text {
+                text: timeProvider.currentDateTime || ""  // ⏰ 여기에서 연결!
+                font.pixelSize: 20
+                color: "#7C9392"
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 70  // 원하는 만큼 여백 조절
+            }
+        }
     }
 
     // ← 경고 이미지는 모두 prefix "/images" 아래에 묶여 있으므로
@@ -45,9 +64,7 @@ ApplicationWindow {
         //anchors.horizontalCenterOffset: 100
         x: 420; y: 160
         source: "qrc:/images/car_background.png"
-        z:1
     }
-
 
     //from gihoon
     /*
@@ -62,74 +79,41 @@ ApplicationWindow {
     }
     */
 
+    Neon{
+        id: neonSign
+        anchors.centerIn: parent
+    }
+    /*
+    StackView {
+        id: stackView
+        anchors.fill: parent
+        z: 10
+    }
+    */
 
-    // 오른쪽에 90도 회전해서 붙이기
-    Image {
-        id: side_right
-        source: "qrc:/images/Vector 70.svg"
-        anchors.right: parent.right
-        anchors.rightMargin: -215
-        anchors.verticalCenter: parent.verticalCenter
-        antialiasing: true
-        // SVG의 크기 조절
-        width: 450; height: 20
-
-        transform: Rotation {
-            origin.x: side_right.width  / 2
-            origin.y: side_right.height / 2
-            angle: 90
+    Row {
+            spacing: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 100
+            z:1
+            IconButton { iconSource: "qrc:/images/nav.svg"; scale: 0.6}
+            IconButton { iconSource: "qrc:/images/music.svg"; scale: 0.6}
+            IconButton { iconSource: "qrc:/images/time.svg"; scale: 0.6}
+            IconButton { iconSource: "qrc:/images/settings.svg"; scale: 0.6}
+            /*
+            IconButton { iconSource: "qrc:/images/nav.svg"; onClicked: stackView.push(Qt.resolvedUrl("NavigationPage.qml"))}
+            IconButton {
+                iconSource: "qrc:/images/nav.svg"
+                onClicked: stackView.push({
+                    item: Qt.resolvedUrl("NavigationPage.qml"),
+                    properties: { stackView: stackView }  // 👈 이렇게 넘겨줌
+                })
+            }
+            IconButton { iconSource: "qrc:/images/music.svg"; onClicked: stackView.push(Qt.resolvedUrl("MusicPage.qml")) }
+            IconButton { iconSource: "qrc:/images/time.svg"; onClicked: stackView.push(Qt.resolvedUrl("TimePage.qml")) }
+            IconButton { iconSource: "qrc:/images/settings.svg"; onClicked: stackView.push(Qt.resolvedUrl("SettingsPage.qml")) }
+            */
         }
-    }
-
-    // 왼쪽에 90도 회전해서 붙이기
-    Image {
-        id: side_left
-        source: "qrc:/images/Vector 70.svg"
-        anchors.left: parent.left
-        anchors.leftMargin: -215
-        anchors.verticalCenter: parent.verticalCenter
-        antialiasing: true
-        // SVG의 크기 조절
-        width: 450; height: 20
-
-        transform: Rotation {
-            origin.x: side_left.width  / 2
-            origin.y: side_left.height / 2
-            angle: 270
-        }
-    }
-
-    // 위쪽
-    Image {
-        id: top_side
-        source: "qrc:/images/Vector 70.svg"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenterOffset: -190
-        antialiasing: true
-        // SVG의 크기 조절
-        width: 1500; height: 20
-    }
-
-    // 아래쪽
-    Image {
-        id: bottom_side
-        source: "qrc:/images/Vector 70.svg"
-        //anchors.verticalCenter: parent.verticalCenter
-        anchors.bottom: parent.bottom
-        //anchors.bottomMargin: 100
-        //anchors.verticalCenterOffset: 190
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: 1050
-        antialiasing: true
-        // SVG의 크기 조절
-        width: 1500; height: 20
-
-        transform: Rotation {
-            origin.x: side_left.width  / 2
-            origin.y: side_left.height / 2
-            angle: 180
-        }
-    }
 
 }
