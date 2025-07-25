@@ -1,15 +1,24 @@
 **CMakeLists.txt수정**
+
+
 cmake_minimum_required(VERSION 3.14)
 project(Practice LANGUAGES CXX)
+
+
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+
+
 find_package(Qt5 REQUIRED COMPONENTS Quick Qml QuickControls2)
 
 #소스,리소스 
+
+
+
 set(SRC
     main.cpp
     timeprovider.cpp
@@ -35,6 +44,8 @@ install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 **main.cpp**
+
+
 // 기존
 const QUrl url(QStringLiteral("qrc:/qt/qml/Practice/Main.qml"));
 // 수정
