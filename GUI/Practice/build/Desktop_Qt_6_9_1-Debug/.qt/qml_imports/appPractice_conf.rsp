@@ -1,0 +1,15 @@
+-rootPath
+/home/gihoon/GHKim/QT/Practice
+-cmake-output
+-output-file
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/qml_imports/appPractice_conf.cmake
+-importPath
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/Practice
+-importPath
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug
+-importPath
+/home/gihoon/Qt/6.9.1/gcc_64/qml
+-qrcFiles
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/qmake_Practice.qrc
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/appPractice_raw_qml_0.qrc
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/app_resources.qrc

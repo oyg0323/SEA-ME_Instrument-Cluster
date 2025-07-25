@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/qt/qml/Practice/">
+    <file alias="Cluster.qml">/home/gihoon/GHKim/QT/Practice/Cluster.qml</file>
+    <file alias="Main.qml">/home/gihoon/GHKim/QT/Practice/Main.qml</file>
+    <file alias="Car.qml">/home/gihoon/GHKim/QT/Practice/Car.qml</file>
+  </qresource>
+</RCC>
+

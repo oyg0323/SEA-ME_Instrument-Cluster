@@ -1,0 +1,38 @@
+{
+	"BUILD_DIR" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen",
+	"CMAKE_BINARY_DIR" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/gihoon/GHKim/QT/Practice",
+	"CMAKE_SOURCE_DIR" : "/home/gihoon/GHKim/QT/Practice",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/appPractice_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/gihoon/GHKim/QT/Practice/Main.qml",
+		"/home/gihoon/GHKim/QT/Practice/Cluster.qml",
+		"/home/gihoon/GHKim/QT/Practice/low_battery.png",
+		"/home/gihoon/GHKim/QT/Practice/Car.png",
+		"/home/gihoon/GHKim/QT/Practice/car_background.png",
+		"/home/gihoon/GHKim/QT/Practice/mesh_2.png",
+		"/home/gihoon/GHKim/QT/Practice/mesh_1.png",
+		"/home/gihoon/GHKim/QT/Practice/needle.png",
+		"/home/gihoon/GHKim/QT/Practice/mesh_3.png",
+		"/home/gihoon/GHKim/QT/Practice/ring.svg",
+		"/home/gihoon/GHKim/QT/Practice/framefffinal.png",
+		"/home/gihoon/GHKim/QT/Practice/needle_battery.png",
+		"/home/gihoon/GHKim/QT/Practice/Ellipse1.svg",
+		"/home/gihoon/GHKim/QT/Practice/Vector 70.svg"
+	],
+	"LOCK_FILE" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/CMakeFiles/appPractice_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/home/gihoon/Qt/6.9.1/gcc_64/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/CMakeFiles/appPractice_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/gihoon/GHKim/QT/Practice/resources.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

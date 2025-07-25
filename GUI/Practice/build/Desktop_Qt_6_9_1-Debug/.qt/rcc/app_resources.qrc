@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="resources.qrc">/home/gihoon/GHKim/QT/Practice/resources.qrc</file>
+  </qresource>
+</RCC>
+

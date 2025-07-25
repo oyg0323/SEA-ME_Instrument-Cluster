@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>Cluster.qml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>framefffinal.png</file>
+        <file>needle.png</file>
+        <file>needle_battery.png</file>
+        <file>low_battery.png</file>
+        <file>ring.svg</file>
+        <file>Ellipse1.svg</file>
+        <file>Vector 70.svg</file>
+        <file>Car.png</file>
+        <file>mesh_1.png</file>
+        <file>mesh_2.png</file>
+        <file>mesh_3.png</file>
+        <file>car_background.png</file>
+    </qresource>
+</RCC>

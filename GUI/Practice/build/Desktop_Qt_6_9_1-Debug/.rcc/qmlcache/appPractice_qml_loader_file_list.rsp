@@ -1,0 +1,9 @@
+--resource
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/qmake_Practice.qrc
+--resource
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/appPractice_raw_qml_0.qrc
+--resource
+/home/gihoon/GHKim/QT/Practice/build/Desktop_Qt_6_9_1-Debug/.qt/rcc/app_resources.qrc
+/qt/qml/Practice/Cluster.qml
+/qt/qml/Practice/Main.qml
+/qt/qml/Practice/Car.qml

@@ -1,0 +1,7 @@
+module Practice
+typeinfo appPractice.qmltypes
+prefer :/qt/qml/Practice/
+Cluster 1.0 Cluster.qml
+Main 1.0 Main.qml
+Car 1.0 Car.qml
+
